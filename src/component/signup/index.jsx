@@ -12,6 +12,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import axios from 'axios';
 
 function Copyright(props) {
   return (
@@ -29,13 +30,35 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignUp() {
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     console.log({
+      firstName: data.get('firstName'),
+      lastName: data.get('lastName'),
       email: data.get('email'),
       password: data.get('password'),
+      address: data.get('address'),
+      // agree: data.get('agree')
     });
+
+    let baseUrl = 'http://localhost:3000';
+    try {
+      let response = await axios.post(`${baseUrl}/signup`, {
+        firstName: data.get('firstName'),
+        lastName: data.get('lastName'),
+
+        email: data.get('email'),
+
+        password: data.get('password'),
+        address: data.get('address')
+      })
+      console.log(response.data.message)
+    }
+    catch (e) {
+      console.log("error in api call", e)
+    }
+
   };
 
   return (
@@ -101,9 +124,20 @@ export default function SignUp() {
                 />
               </Grid>
               <Grid item xs={12}>
+              <TextField
+                  required
+                  fullWidth
+                  name="address"
+                  label="address"
+                  type="text"
+                  id="address"
+                 
+                />
+              </Grid>
+              <Grid item xs={12}>
                 <FormControlLabel
-                  control={<Checkbox value="allowExtraEmails" color="primary" />}
-                  label="I want to receive inspiration, marketing promotions and updates via email."
+                  control={<Checkbox value="allowExtraEmails" color="primary" name="agree" />}
+                  label="I want to receive inspiration, marketing promotions and updates via email." 
                 />
               </Grid>
             </Grid>

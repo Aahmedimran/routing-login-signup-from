@@ -19,7 +19,7 @@ function Copyright(props) {
         <Typography variant="body2" color="text.secondary" align="center" {...props}>
             {'Copyright © '}
             <Link color="inherit" href="https://mui.com/">
-                sysBorg
+                munshi sol
             </Link>{' '}
             {new Date().getFullYear()}
             {'.'}
@@ -39,18 +39,18 @@ export default function Login() {
             email: data.get('email'),
             password: data.get('password'),
         });
-
-        let baseUrl = "http://localhost:5001";
-        try {
-            let response = await axios.post(`${baseUrl}/login`, {
-                email: data.get('email'),
-                password: data.get('password'),
-            })
-            console.log("response: ", response.data.message);
-
-        } catch (e) {
-            console.log("Error in api call: ", e);
+        let baseUrl = 'http://localhost:3000';
+try{
+        let response = await axios.get(`${baseUrl}/login`,{
+            email: data.get('email'),
+            password: data.get('password'),
+        })
+        console.log(response.data.message)
+    }
+        catch(e){
+console.log("error in api call",e)
         }
+    
     };
 
     return (
@@ -69,7 +69,7 @@ export default function Login() {
                         <LockOutlinedIcon />
                     </Avatar>
                     <Typography component="h1" variant="h5">
-                        Sign in
+                        Login
                     </Typography>
                     <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                         <TextField
