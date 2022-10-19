@@ -13,13 +13,19 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
+import { useContext } from "react";
+import { GlobalContext } from '../../context';
+
+
+
+
 
 function Copyright(props) {
     return (
         <Typography variant="body2" color="text.secondary" align="center" {...props}>
             {'Copyright © '}
             <Link color="inherit" href="https://mui.com/">
-                munshi sol
+                sysBorg
             </Link>{' '}
             {new Date().getFullYear()}
             {'.'}
@@ -31,6 +37,9 @@ const theme = createTheme();
 
 export default function Login() {
 
+    let { state, dispatch } = useContext(GlobalContext);
+
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
@@ -39,18 +48,27 @@ export default function Login() {
             email: data.get('email'),
             password: data.get('password'),
         });
-        let baseUrl = 'http://localhost:3001';
-try{
-        let response = await axios.get(`${baseUrl}/login`,{
-            email: data.get('email'),
-            password: data.get('password'),
-        })
-        console.log(response.data.message)
-    }
-        catch(e){
-console.log("error in api call",e)
+
+        let baseUrl = "http://localhost:3001";
+        try {
+            let response = await axios.post(`${baseUrl}/login`,
+                {
+                    email: data.get('email'),
+                    password: data.get('password'),
+                },
+                {
+                    withCredentials: true
+                })
+            console.log("response: ", response.data);
+
+            dispatch({
+                type: "USER_LOGIN",
+                payload: response.data.profile
+            })
+
+        } catch (e) {
+            console.log("Error in api call: ", e);
         }
-    
     };
 
     return (
@@ -69,7 +87,7 @@ console.log("error in api call",e)
                         <LockOutlinedIcon />
                     </Avatar>
                     <Typography component="h1" variant="h5">
-                        Login
+                        Sign in
                     </Typography>
                     <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                         <TextField
