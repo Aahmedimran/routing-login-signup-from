@@ -48,6 +48,7 @@ export default function Login() {
             email: data.get('email'),
             password: data.get('password'),
         });
+<<<<<<< HEAD
 
         let baseUrl = "http://localhost:3001";
         try {
@@ -68,6 +69,18 @@ export default function Login() {
 
         } catch (e) {
             console.log("Error in api call: ", e);
+=======
+        let baseUrl = 'http://localhost:3001';
+try{
+        let response = await axios.post(`${baseUrl}/login`,{
+            email: data.get('email'),
+            password: data.get('password'),
+        })
+        console.log(response.data.message)
+    }
+        catch(e){
+console.log("error in api call",e)
+>>>>>>> 6e0d4353666e8878bc1b58a5e1f75b15457e397f
         }
     };
 
